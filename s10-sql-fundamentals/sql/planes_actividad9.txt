@@ -1,0 +1,8 @@
+1. Consulta original
+tiempo: 0.016
+analyzed_plan
+
+
+2. La misma consulta, con indice
+tiempo: 0.01
+analyzed_plan

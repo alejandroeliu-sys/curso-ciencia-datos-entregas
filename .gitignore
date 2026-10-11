@@ -1,0 +1,10 @@
+venv/
+synthea/
+vocab/
+eunomia/
+*.csv
+*.jar
+*.zip
+*.duckdb
+*.duckdb.wal
+__pycache__/

@@ -1,0 +1,64 @@
+Base de datos: /home/alecedillo/s12-omop-cdm-introduccion/omop.duckdb
+Consultas    : /home/alecedillo/s12-omop-cdm-introduccion/sql/consultas_omop.sql  (5 seleccionadas)
+
+====================================================================================================
+CONSULTA 5.1 | ¿Qué porcentaje de registros tiene concept_id = 0 (sin mapear) en cada tabla y campo de concepto?
+====================================================================================================
+               tabla                       campo  total_filas  filas_con_cero  pct_cero
+condition_occurrence        condition_concept_id       202868            2859      1.41
+condition_occurrence condition_source_concept_id       202868               0      0.00
+condition_occurrence   condition_type_concept_id       202868               0      0.00
+  observation_period      period_type_concept_id         5706               0      0.00
+              person        ethnicity_concept_id         5706               0      0.00
+              person           gender_concept_id         5706               0      0.00
+              person             race_concept_id         5706              76      1.33
+    visit_occurrence            visit_concept_id       324239            4298      1.33
+    visit_occurrence       visit_type_concept_id       324239               0      0.00
+
+====================================================================================================
+CONSULTA 5.2 | (Opcional) ¿Y en las tablas opcionales drug_exposure y measurement?
+====================================================================================================
+        tabla                  campo  total_filas  filas_con_cero  pct_cero
+drug_exposure        drug_concept_id       271654               0      0.00
+  measurement measurement_concept_id      2195630               0      0.00
+  measurement        unit_concept_id      2195630          274605     12.51
+
+====================================================================================================
+CONSULTA 5.3 | ¿A qué DOMINIO pertenecen los conceptos que acabaron en condition_occurrence?
+====================================================================================================
+         dominio_del_concepto  n_registros  n_personas  pct_registros
+                  Observation       104724        5706          51.62
+                    Condition        95284        5620          46.97
+(concept_id = 0, sin dominio)         2859        2127           1.41
+                  Measurement            1           1           0.00
+
+====================================================================================================
+CONSULTA 5.4 | ¿Qué códigos SNOMED de Synthea se quedaron sin concepto estándar (los 15 más frecuentes)?
+====================================================================================================
+ codigo_synthea  source_concept_id                          source_concept_name  n_registros  n_personas
+      267020005            4149855                          H/O: tubal ligation          600         600
+      399261000            4163883   History of coronary artery bypass grafting          384         384
+       62106007             378001     Concussion with no loss of consciousness          342         331
+      428251008            4323208                      History of appendectomy          267         267
+        6525002            4275756                         Dependent drug abuse          267         267
+      446654005           40488824                                      Refugee          254         254
+      399211009            4163874             History of myocardial infarction          228         228
+     1290882004            1246980                           History of seizure          224         224
+      161665007            4059356                  History of renal transplant          153         153
+  1231000119100           43530644          History of aortic valve replacement           48          48
+      449868002           42709996                         Smokes tobacco daily           33          33
+       94503003            4314337    Metastatic malignant neoplasm to prostate           13          13
+108631000119101           46269898 History of autologous bone marrow transplant           13          13
+153351000119102           45757492   History of peripheral stem cell transplant           12          12
+       94260004            4311765       Metastatic malignant neoplasm to colon           11          11
+
+====================================================================================================
+CONSULTA 5.5 | ¿Qué clases de encuentro de Synthea quedaron con visit_concept_id = 0?
+====================================================================================================
+encounterclass_synthea  n_visitas  n_personas
+                  home       1776         104
+               virtual        973         418
+                   snf        789         726
+               hospice        760         644
+
+Fin. Consultas ejecutadas: 5, con error: 0

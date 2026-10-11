@@ -1,0 +1,53 @@
+Base de datos: /home/alecedillo/s12-omop-cdm-introduccion/omop.duckdb
+Consultas    : /home/alecedillo/s12-omop-cdm-introduccion/sql/consultas_omop.sql  (7 seleccionadas)
+
+====================================================================================================
+CONSULTA 7.1 | ¿Qué conceptos de CONCEPT se llaman como la condición elegida (hipertensión esencial)?
+====================================================================================================
+ concept_id           concept_name vocabulary_id concept_code domain_id standard_concept invalid_reason
+     320128 Essential hypertension        SNOMED     59621000 Condition                S              -
+   40323437 Essential hypertension        SNOMED    155296003 Condition                -              U
+
+====================================================================================================
+CONSULTA 7.2 | ¿Cuántas personas tienen la condición si contamos por condition_concept_id y cuántas si contamos por condition_source_value?
+====================================================================================================
+                                                                 metodo  n_personas  n_eventos
+                                 A) por condition_concept_id (estándar)        1259       1259
+                    B) por condition_source_value (código del estándar)        1259       1259
+C) por condition_source_value (todos los códigos SNOMED con ese nombre)        1259       1259
+
+====================================================================================================
+CONSULTA 7.3 | ¿Qué códigos de origen alimentan cada concepto estándar de la condición elegida?
+====================================================================================================
+codigo_fuente          nombre_fuente  condition_concept_id        nombre_estandar  n_personas  n_eventos
+     59621000 Essential hypertension                320128 Essential hypertension        1259       1259
+
+====================================================================================================
+CONSULTA 7.4 | (Extra) ¿Cuántas personas tienen CUALQUIER trastorno hipertensivo usando la jerarquía (CONCEPT_ANCESTOR)?
+====================================================================================================
+ condition_concept_id               concepto  n_personas  n_eventos
+               320128 Essential hypertension        1259       1259
+               439393          Pre-eclampsia         121        126
+
+====================================================================================================
+CONSULTA 7.5 | (Extra) ¿Qué códigos de Synthea CAMBIAN de concepto al mapear (concepto fuente distinto del estándar)?
+====================================================================================================
+ codigo_fuente                                              nombre_fuente fuente_es_estandar  condition_concept_id                      nombre_estandar dominio_estandar  n_personas  n_eventos
+     424132000              Non-small cell carcinoma of lung, TNM stage 1                  -               4115276           Non-small cell lung cancer        Condition          41         41
+67811000119102 Primary small cell malignant neoplasm of lung, TNM stage 1                  -              37167517 Primary small cell carcinoma of lung        Condition           4          4
+    1003755004                                           Allergy to latex                  -              43530807                 Allergic disposition      Observation           2          2
+
+====================================================================================================
+CONSULTA 8.1 | ¿Cuántos eventos de condición hay en total y cuántos caen dentro de un observation_period de la persona?
+====================================================================================================
+ eventos_total  eventos_dentro  eventos_fuera  pct_diferencia  personas_total  personas_con_eventos_dentro
+        202868          201578           1290            0.64            5706                         5704
+
+====================================================================================================
+CONSULTA 8.2 | Los eventos que quedan fuera, ¿cuántos días antes del inicio o después del fin del periodo están?
+====================================================================================================
+        posicion  dias_fuera  n_eventos  n_personas
+antes del inicio           1       1289        1044
+ después del fin          15          1           1
+
+Fin. Consultas ejecutadas: 7, con error: 0

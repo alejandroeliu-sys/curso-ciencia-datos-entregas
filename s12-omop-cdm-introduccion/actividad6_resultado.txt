@@ -1,0 +1,92 @@
+Base de datos: /home/alecedillo/s12-omop-cdm-introduccion/omop.duckdb
+Consultas    : /home/alecedillo/s12-omop-cdm-introduccion/sql/consultas_omop.sql  (7 seleccionadas)
+
+====================================================================================================
+CONSULTA 6.1 | ¿Cuántas personas hay en la base de datos?
+====================================================================================================
+ n_personas
+       5706
+
+====================================================================================================
+CONSULTA 6.2 | ¿Cómo se distribuyen las personas por sexo?
+====================================================================================================
+ gender_concept_id   sexo  n_personas  pct
+              8532 FEMALE        2920 51.2
+              8507   MALE        2786 48.8
+
+====================================================================================================
+CONSULTA 6.3 | ¿Cómo se distribuyen las personas por década de nacimiento y sexo?
+====================================================================================================
+ decada_nacimiento  gender_concept_id   sexo  n_personas
+              1910               8532 FEMALE          28
+              1910               8507   MALE          40
+              1920               8532 FEMALE          51
+              1920               8507   MALE          38
+              1930               8532 FEMALE          36
+              1930               8507   MALE          58
+              1940               8532 FEMALE         190
+              1940               8507   MALE         168
+              1950               8532 FEMALE         274
+              1950               8507   MALE         276
+              1960               8532 FEMALE         382
+              1960               8507   MALE         321
+              1970               8532 FEMALE         412
+              1970               8507   MALE         381
+              1980               8532 FEMALE         350
+              1980               8507   MALE         334
+              1990               8532 FEMALE         308
+              1990               8507   MALE         344
+              2000               8532 FEMALE         388
+              2000               8507   MALE         360
+              2010               8532 FEMALE         306
+              2010               8507   MALE         307
+              2020               8532 FEMALE         195
+              2020               8507   MALE         159
+
+====================================================================================================
+CONSULTA 6.4 | ¿Cuál es la mediana de días de observación por persona?
+====================================================================================================
+ n_personas_con_periodo  mediana_dias  mediana_anios  media_dias  min_dias  max_dias
+                   5706       10477.0           28.7     11254.6       0.0   40058.0
+
+====================================================================================================
+CONSULTA 6.5 | ¿Cuáles son los 20 diagnósticos con más personas afectadas?
+====================================================================================================
+ condition_concept_id                            diagnostico     dominio  n_personas  pct_personas  n_eventos
+              4199788                  Medication review due Observation        5706         100.0      39923
+              4281516                             Gingivitis   Condition        4608          80.8      14933
+              4053118                   Full-time employment Observation        4470          78.3      14434
+              4251306                                 Stress Observation        4468          78.3      15561
+              4059634                   Part-time employment Observation        3659          64.1       9078
+             40481087                        Viral sinusitis   Condition        3615          63.4       5832
+              4172829                 Limited social contact   Condition        3042          53.3       5608
+              4309238                       Social isolation   Condition        3040          53.3       5545
+              4090111                       Gingival disease   Condition        2706          47.4       4440
+              4060985          Body mass index 30+ - obesity   Condition        2687          47.1       2687
+             42538208                     Not in labor force Observation        2675          46.9       4997
+              4076230              Received higher education Observation        2665          46.7       2665
+              4112343                Acute viral pharyngitis   Condition        2502          43.8       3415
+             45768458       Victim of intimate partner abuse Observation        2396          42.0       3555
+             40274283                  Primary dental caries   Condition        2383          41.8       3401
+               260139                       Acute bronchitis   Condition        2176          38.1       2672
+             37018196                            Prediabetes   Condition        2124          37.2       2124
+               439777                                 Anemia   Condition        2016          35.3       2016
+              4313322 Reports of violence in the environment Observation        1882          33.0       3030
+              4251171                             Unemployed Observation        1689          29.6       2040
+
+====================================================================================================
+CONSULTA 6.6 | ¿Cuántas visitas tiene, en promedio, cada persona?
+====================================================================================================
+ n_visitas  n_personas_total  n_personas_con_visita  visitas_por_persona_total  visitas_por_persona_con_visita
+    324239              5706                   5706                      56.82                           56.82
+
+====================================================================================================
+CONSULTA 6.7 | ¿Cuántas visitas hay por tipo de visita y cuántas tiene en promedio cada persona?
+====================================================================================================
+ visit_concept_id          tipo_visita  n_visitas  n_personas  visitas_por_persona_con_ese_tipo  visitas_por_persona_total
+             9202     Outpatient Visit     288109        5706                             50.49                      50.49
+             9203 Emergency Room Visit      26625        4454                              5.98                       4.67
+             9201      Inpatient Visit       5207        1925                              2.70                       0.91
+                0  No matching concept       4298        1675                              2.57                       0.75
+
+Fin. Consultas ejecutadas: 7, con error: 0
