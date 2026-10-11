@@ -1,0 +1,438 @@
+Base de datos: /home/alecedillo/s12-omop-cdm-introduccion/omop.duckdb
+Synthea CSV  : /home/alecedillo/s10-sql-fundamentals/synthea/output/csv
+Consultas    : farmacoepi.sql (43 seleccionadas)
+
+==============================================================================================================
+CONSULTA 0.1 | [CREA results.parametros] ¿Qué ingrediente, analitos y ventanas usaremos en todo el lab?
+==============================================================================================================
+ ingrediente_id ingrediente  analito_basal_id           analito_basal  glucosa_id                        glucosa  ventana_persistencia_dias  seguimiento_pdc_dias  ventana_basal_dias
+        1308216  lisinopril           3004249 Systolic blood pressure     3000483 Glucose [Mass/volume] in Blood                         30                   365                  90
+
+==============================================================================================================
+CONSULTA 1.1 | ¿Cómo se distribuye drug_type_concept_id (prescripción, dispensación, administración...)?
+==============================================================================================================
+ drug_type_concept_id tipo_registro  n_registros  n_personas   pct
+                32817           EHR       271654        5577 100.0
+
+==============================================================================================================
+CONSULTA 2.1 | ¿Cuáles son los 20 INGREDIENTES con más pacientes (subiendo por la jerarquía con CONCEPT_ANCESTOR)?
+==============================================================================================================
+ ingrediente_id         ingrediente  n_personas  n_registros  n_productos_distintos
+       19069022     sodium fluoride        4832        15191                      1
+        1125315       acetaminophen        3587        19593                     12
+        1713332         amoxicillin        1604         1932                      5
+        1177480           ibuprofen        1446         5292                      3
+        1759842         clavulanate        1188         1320                      3
+        1539403         simvastatin        1146         5813                      5
+        1115008            naproxen        1131         1239                      2
+        1549786   ethinyl estradiol        1020         2229                      8
+        1361711       nitroglycerin         958         1005                      2
+        1307046          metoprolol         936         1003                      8
+        1308216          lisinopril         926        24334                      9
+       19127890   inert ingredients         898         1869                      6
+        1589505      levonorgestrel         869         1447                      6
+        1322184         clopidogrel         810          830                      2
+        1521369       norethindrone         726         1557                      5
+         974166 hydrochlorothiazide         722        19190                     13
+        1729720        penicillin V         715          787                      2
+        1174888         hydrocodone         691         6245                      4
+        1119510    dextromethorphan         656          693                      1
+         738818          doxylamine         656          693                      1
+
+==============================================================================================================
+CONSULTA 2.2 | ¿Qué valores tiene days_supply? (¿está vacío?)
+==============================================================================================================
+days_supply  n_registros   pct
+     (NULL)       271654 100.0
+
+==============================================================================================================
+CONSULTA 2.3 | Como no hay days_supply, ¿cuánto duran las exposiciones según sus fechas?
+==============================================================================================================
+                  origen_fecha_fin                         duracion  n_registros  n_personas   pct
+               con STOP en Synthea 0) NEGATIVA (end < start: error)          223          48  0.08
+               con STOP en Synthea                        a) 0 días        92004        4975 33.87
+               con STOP en Synthea                           b) 1-7        45434        1678 16.72
+               con STOP en Synthea                          c) 8-30        35969        4177 13.24
+               con STOP en Synthea                         d) 31-90        20181        2008  7.43
+               con STOP en Synthea                        e) 91-365        26628        3249  9.80
+               con STOP en Synthea                         f) > 365        36330        2565 13.37
+sin STOP en Synthea (fin = inicio)                        a) 0 días        14885        3849  5.48
+
+==============================================================================================================
+CONSULTA 2.4 | ¿Qué % de filas tiene end_date nulo, end_date = start_date, end < start, o drug_concept_id = 0?
+==============================================================================================================
+ n_registros  pct_end_nulo  pct_end_igual_start  pct_end_antes_start  pct_sin_stop_original  pct_concept_0  pct_days_supply_nulo  pct_quantity_nulo
+      271654           0.0                39.35                 0.08                   5.48            0.0                 100.0                0.0
+
+==============================================================================================================
+CONSULTA 2.5 | ¿Qué productos tienen fin = inicio (administraciones de un día vs. recetas sin STOP)?
+==============================================================================================================
+ drug_concept_id                                                       producto  n_sin_stop  n_stop_mismo_dia  n_personas
+        19030765               1 ML epoetin alfa 4000 UNT/ML Injection [Epogen]           0             41193         151
+        44818179                          sodium fluoride 0.0272 MG/MG Oral Gel           0             15191        4832
+        35604087                                      cisplatin 50 MG Injection           0              9765          45
+         1378388                                    paclitaxel 100 MG Injection           0              9008          51
+          906115                        tropicamide 5 MG/ML Ophthalmic Solution           0              3487         329
+        35603224                            10 ML furosemide 10 MG/ML Injection           0              2278         116
+        19020053                               acetaminophen 500 MG Oral Tablet           0              1198          89
+        19010292                    1 ML tacrolimus 5 MG/ML Injection [Prograf]           0              1114         109
+        19080128                                   lisinopril 10 MG Oral Tablet         842               143         842
+        19126352                      nitroglycerin 0.4 MG/ACTUAT Mucosal Spray         908                 0         908
+        40166824 24 HR metoprolol succinate 100 MG Extended Release Oral Tablet         893                 0         893
+         1350510                         etoposide 100 MG Injection [Etopophos]           0               848           4
+         1539411                                  simvastatin 20 MG Oral Tablet         821                 0         821
+        19075601                                  clopidogrel 75 MG Oral Tablet         791                 0         791
+        40160973           0.4 ML enoxaparin sodium 100 MG/ML Prefilled Syringe           0               785          88
+
+==============================================================================================================
+CONSULTA 2.6 | ¿Hay registros duplicados por mapeos 1->N (mismo paciente, fecha y código fuente con varios drug_concept_id)?
+==============================================================================================================
+codigo_rxnorm_fuente           producto_fuente  n_conceptos_destino         conceptos_destino  n_registros
+              235389 mestranol / norethynodrel                    2 mestranol | norethynodrel           86
+
+==============================================================================================================
+CONSULTA 3.1 | ¿Cuántas personas tienen drug_concept_id = el INGREDIENTE exacto vs. cualquier descendiente (CONCEPT_ANCESTOR)?
+==============================================================================================================
+ingrediente                                              metodo  n_personas  n_registros
+ lisinopril           A) drug_concept_id = ingrediente (exacto)           0            0
+ lisinopril B) descendientes del ingrediente (concept_ancestor)         926        24334
+
+==============================================================================================================
+CONSULTA 3.2 | ¿Qué productos concretos (descendientes) aportan esos pacientes?
+==============================================================================================================
+ drug_concept_id                                                   producto         clase  niveles_desde_ingrediente  n_personas  n_registros
+        19080128                               lisinopril 10 MG Oral Tablet Clinical Drug                          2         843        23679
+        19080129                               lisinopril 20 MG Oral Tablet Clinical Drug                          2          68          605
+         1308251                                lisinopril 5 MG Oral Tablet Clinical Drug                          2          21           21
+          974200 hydrochlorothiazide 12.5 MG / lisinopril 20 MG Oral Tablet Clinical Drug                          2           7            7
+          974199 hydrochlorothiazide 12.5 MG / lisinopril 10 MG Oral Tablet Clinical Drug                          2           6            6
+          974201   hydrochlorothiazide 25 MG / lisinopril 20 MG Oral Tablet Clinical Drug                          2           5            5
+         1308221                               lisinopril 40 MG Oral Tablet Clinical Drug                          2           5            5
+         1308250                              lisinopril 2.5 MG Oral Tablet Clinical Drug                          2           5            5
+        19029027                               lisinopril 30 MG Oral Tablet Clinical Drug                          2           1            1
+
+==============================================================================================================
+CONSULTA 4.1 | [CREA results.exposicion_ingrediente] ¿Qué exposiciones al ingrediente hay y cuál es su fecha fin "efectiva"?
+==============================================================================================================
+ n_exposiciones  n_personas  n_fin_imputado  mediana_dias
+          24010         926             950          28.0
+
+==============================================================================================================
+CONSULTA 4.2 | [CREA results.cobertura_ingrediente] ¿Qué tramos continuos de cobertura hay (fusionando solapes y días contiguos)?
+==============================================================================================================
+ n_tramos  n_personas
+      942         926
+
+==============================================================================================================
+CONSULTA 4.3 | [CREA results.drug_era_ingrediente] ¿Qué eras de exposición salen con una ventana de persistencia de 30 días?
+==============================================================================================================
+ n_eras  n_personas  eras_por_persona  mediana_dias_era  exposiciones_incluidas  total_gap_days  n_tramos_sin_huecos_4_2
+    942         926              1.02            3617.5                 24010.0             0.0                      942
+
+==============================================================================================================
+CONSULTA 4.4 | ¿Cómo se reparten las eras del ingrediente por duración? (con su nombre)
+==============================================================================================================
+ingrediente  duracion_era  n_eras  n_personas
+ lisinopril a) <= 30 días      98          98
+ lisinopril      b) 31-90       4           4
+ lisinopril     c) 91-365      11          11
+ lisinopril   d) 1-5 años     126         126
+ lisinopril   e) > 5 años     703         703
+
+==============================================================================================================
+CONSULTA 4.5 | ¿Existe una tabla DRUG_ERA derivada en la base con la que comparar?
+==============================================================================================================
+tabla_buscada esquema                                   estado
+condition_era results existe (creada por nosotros en este lab)
+     dose_era       -                                NO existe
+     drug_era results existe (creada por nosotros en este lab)
+
+==============================================================================================================
+CONSULTA 4.6 | [CREA results.drug_era] (Opcional) ¿Y la DRUG_ERA completa para TODOS los ingredientes, con el mismo método?
+==============================================================================================================
+ n_eras  n_personas  n_ingredientes
+  65562        5577             210
+
+==============================================================================================================
+CONSULTA 4.7 | ¿Coincide la era "a mano" del ingrediente (4.3) con la de la DRUG_ERA completa (4.6)?
+==============================================================================================================
+ingrediente  eras_4_3  eras_4_6  personas_4_3  personas_4_6
+ lisinopril       942       942           926           926
+
+==============================================================================================================
+CONSULTA 5.1 | [CREA results.pdc_ingrediente] ¿Qué PDC y MPR tiene cada paciente en su primer año de tratamiento?
+==============================================================================================================
+ n_personas  n_elegibles  n_elegibles_pqa
+        926          912              301
+
+==============================================================================================================
+CONSULTA 5.2 | ¿Cómo se distribuye el PDC entre los pacientes elegibles y qué % es adherente (PDC >= 0.8)?
+==============================================================================================================
+ingrediente                        poblacion  n_personas  pdc_p10  pdc_p25  pdc_mediana  pdc_media  pct_adherentes_pdc_080
+ lisinopril            a) ventana >= 91 días         912     0.99      1.0          1.0      0.914                    90.2
+ lisinopril b) + criterio PQA (>= 2 recetas)         301     1.00      1.0          1.0      0.984                    97.3
+
+==============================================================================================================
+CONSULTA 5.3 | ¿En cuántos pacientes el MPR supera 1 (y el PDC nunca)? ¿Por qué?
+==============================================================================================================
+ n_personas_elegibles  n_mpr_mayor_1  mpr_maximo  pdc_maximo  mpr_media  pdc_media  pct_adherentes_mpr_080
+                  912            821       2.014         1.0      1.018      0.914                    90.4
+
+==============================================================================================================
+CONSULTA 5.4 | ¿Cuántos pacientes quedan fuera de la elegibilidad y por qué?
+==============================================================================================================
+                                                  motivo  pdc_media  n_personas
+                 a) ventana < 91 días (poco seguimiento)      0.966          14
+b) elegible, pero solo 1 receta en el año (fuera en PQA)      0.880         611
+                    c) elegible también con criterio PQA      0.984         301
+
+==============================================================================================================
+CONSULTA 6.1 | ¿Cuáles son los 15 analitos con más mediciones (y cuántos pacientes tienen cada uno)?
+==============================================================================================================
+ measurement_concept_id                                                                                                              analito  n_mediciones  n_personas  n_unidades
+               43055141                                                        Pain severity - 0-10 verbal numeric rating [Score] - Reported        132560        5706           1
+                3004249                                                                                              Systolic blood pressure         80109        5706           1
+                3012888                                                                                             Diastolic blood pressure         80109        5706           1
+                3025315                                                                                                          Body weight         76445        5706           1
+                3027018                                                                                                           Heart rate         74894        5706           1
+                3024171                                                                                                     Respiratory rate         74894        5706           1
+                3036277                                                                                                          Body height         73247        5706           1
+                3038553                                                                                        Body mass index (BMI) [Ratio]         67737        5575           1
+               46236952 Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (MDRD)/1.73 sq M         54481        1598           2
+               44786664                                                   Weight difference [Mass difference] --pre dialysis - post dialysis         50536         176           1
+                3018572                                                                                     Chloride [Moles/volume] in Blood         48131        2526           1
+                3005456                                                                                    Potassium [Moles/volume] in Blood         48131        2526           1
+                3051825                                                                                    Creatinine [Mass/volume] in Blood         48131        2526           1
+                3032503                                                                                       Calcium [Mass/volume] in Blood         48131        2526           1
+                3014094                                                                        Carbon dioxide, total [Moles/volume] in Blood         48131        2526           1
+
+==============================================================================================================
+CONSULTA 6.2 | ¿En qué unidades viene la glucosa (o el analito de parámetros)?
+==============================================================================================================
+                       analito unidad_fuente  unit_concept_id                  unidad  n_mediciones  n_personas
+Glucose [Mass/volume] in Blood         mg/dL             8840 milligram per deciliter         48131        2526
+
+==============================================================================================================
+CONSULTA 6.3 | ¿Qué analitos aparecen con MÁS DE UNA unidad?
+==============================================================================================================
+ measurement_concept_id                                                                                                              analito  n_unidades_fuente          unidades_fuente  n_mediciones
+               46236952 Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (MDRD)/1.73 sq M                  2 mL/min/{1.73_m2}, mL/min         54481
+                3022621                                                                                            pH of Urine by Test strip                  2                 pH, [pH]         34583
+                3000330                                                                              Specific gravity of Urine by Test strip                  2          {nominal}, {SG}         34583
+                3019897                                                                  Erythrocyte [DistWidth] in Blood by Automated count                  2                    fL, %         18466
+                3035995                                                  Alkaline phosphatase [Enzymatic activity/volume] in Serum or Plasma                  2              U/L, [iU]/L         17297
+                3013721                                            Aspartate aminotransferase [Enzymatic activity/volume] in Serum or Plasma                  2              U/L, [iU]/L         17297
+                3006923                                              Alanine aminotransferase [Enzymatic activity/volume] in Serum or Plasma                  2              U/L, [iU]/L         17297
+                3027970                                                                       Globulin [Mass/volume] in Serum by calculation                  2                g/L, g/dL         12714
+                3020891                                                                                                     Body temperature                  2              Cel, [degF]          6298
+               36306105                                       Troponin I.cardiac [Mass/volume] in Serum or Plasma by High sensitivity method                  2              pg/mL, ng/L          2540
+
+==============================================================================================================
+CONSULTA 6.4 | ¿Qué % de mediciones no tiene valor numérico, tiene operador (<, >) o tiene unit_concept_id = 0?
+==============================================================================================================
+ n_mediciones  pct_valor_nulo  pct_con_operador  pct_valor_concepto  pct_unidad_0  pct_concepto_0
+      2195630             0.0               0.0                 0.0         12.51             0.0
+
+==============================================================================================================
+CONSULTA 6.5 | ¿Qué unidades fuente se quedaron sin unit_concept_id (las 10 más frecuentes)?
+==============================================================================================================
+   unidad_fuente  n_analitos                                                                                                      ejemplo_analito  n_mediciones
+         {score}           1                                                        Pain severity - 0-10 verbal numeric rating [Score] - Reported        132560
+             U/L           5                                                  Alkaline phosphatase [Enzymatic activity/volume] in Serum or Plasma         53211
+mL/min/{1.73_m2}           1 Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (MDRD)/1.73 sq M         36899
+       {nominal}           1                                                                              Specific gravity of Urine by Test strip         33854
+            kU/L          15                                                                                Walnut IgE Ab [Units/volume] in Serum          6210
+      {presence}           7                                                                            Protein [Presence] in Urine by Test strip          5103
+            [pH]           3                                                                                                 pH of Arterial blood          3241
+           {INR}           1                                                                     INR in Platelet poor plasma by Coagulation assay          2563
+            {SG}           1                                                                              Specific gravity of Urine by Test strip           729
+         m[IU]/L           1                                                                        Thyrotropin [Units/volume] in Serum or Plasma           208
+
+==============================================================================================================
+CONSULTA 7.0 | Antes de convertir: ¿los valores de cada unidad tienen la magnitud que esperas de esa unidad?
+==============================================================================================================
+ measurement_concept_id                                                                                                              analito    unidad_fuente                       unidad  n_mediciones  minimo  mediana  maximo
+                3006923                                              Alanine aminotransferase [Enzymatic activity/volume] in Serum or Plasma              U/L          No matching concept         17285     0.0    35.60    60.0
+                3006923                                              Alanine aminotransferase [Enzymatic activity/volume] in Serum or Plasma           [iU]/L international unit per liter            12   101.8   127.70   168.9
+                3035995                                                  Alkaline phosphatase [Enzymatic activity/volume] in Serum or Plasma              U/L          No matching concept         17285    20.0    79.60   140.0
+                3035995                                                  Alkaline phosphatase [Enzymatic activity/volume] in Serum or Plasma           [iU]/L international unit per liter            12    35.4    77.95   114.5
+                3013721                                            Aspartate aminotransferase [Enzymatic activity/volume] in Serum or Plasma              U/L          No matching concept         17285     0.0    22.20    40.0
+                3013721                                            Aspartate aminotransferase [Enzymatic activity/volume] in Serum or Plasma           [iU]/L international unit per liter            12   101.8   170.45   195.0
+                3020891                                                                                                     Body temperature              Cel               degree Celsius          6297    36.1    37.80    42.2
+                3020891                                                                                                     Body temperature           [degF]            degree Fahrenheit             1   101.9   101.90   101.9
+                3019897                                                                  Erythrocyte [DistWidth] in Blood by Automated count               fL                   femtoliter         13900    39.0    42.50    46.0
+                3019897                                                                  Erythrocyte [DistWidth] in Blood by Automated count                %                      percent          4566    12.3    13.90    15.4
+                3027970                                                                       Globulin [Mass/volume] in Serum by calculation              g/L               gram per liter         12702     2.0     2.80     3.5
+                3027970                                                                       Globulin [Mass/volume] in Serum by calculation             g/dL           gram per deciliter            12     2.4     3.25     3.9
+               46236952 Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (MDRD)/1.73 sq M mL/min/{1.73_m2}          No matching concept         36899     1.0    53.00   160.9
+               46236952 Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (MDRD)/1.73 sq M           mL/min        milliliter per minute         17582     2.1    19.80   160.2
+                3000330                                                                              Specific gravity of Urine by Test strip        {nominal}          No matching concept         33854     1.0     1.00     1.0
+                3000330                                                                              Specific gravity of Urine by Test strip             {SG}          No matching concept           729     1.0     1.00     1.0
+               36306105                                       Troponin I.cardiac [Mass/volume] in Serum or Plasma by High sensitivity method            pg/mL      picogram per milliliter          2349     0.0     0.00   348.4
+               36306105                                       Troponin I.cardiac [Mass/volume] in Serum or Plasma by High sensitivity method             ng/L           nanogram per liter           191     0.4    59.00   119.6
+                3022621                                                                                            pH of Urine by Test strip               pH                           pH         33854     5.0     6.00     7.0
+                3022621                                                                                            pH of Urine by Test strip             [pH]          No matching concept           729     4.5     6.30     8.0
+
+==============================================================================================================
+CONSULTA 7.1 | [CREA results.glucosa_simulada] Simulamos que el 30 % de las glucosas llegó en mmol/L. ¿Cuántas quedaron así?
+==============================================================================================================
+unidad_fuente                  unidad  n_mediciones  media  minimo  maximo
+        mg/dL milligram per deciliter         33658   88.2   64.00  199.90
+       mmol/L     millimole per liter         14473    4.9    3.55   11.09
+
+==============================================================================================================
+CONSULTA 7.2 | [CREA results.measurement_normalizada] ¿Cuántas filas hay que convertir y cómo quedan (glucosa simulada + temperatura real)?
+==============================================================================================================
+              caso                        analito unit_original  convertido  n_mediciones  n_personas  media_original  media_normalizada unidad_final
+glucosa (simulada) Glucose [Mass/volume] in Blood         mg/dL       False         33658        2489           88.20              88.20        mg/dL
+glucosa (simulada) Glucose [Mass/volume] in Blood        mmol/L        True         14473        2251            4.90              88.25        mg/dL
+temperatura (real)               Body temperature           Cel       False          6297        3243           38.24              38.24          Cel
+temperatura (real)               Body temperature        [degF]        True             1           1          101.90              38.80          Cel
+
+==============================================================================================================
+CONSULTA 7.3 | ¿Recuperamos los valores reales? (diferencia normalizado - original de MEASUREMENT)
+==============================================================================================================
+ convertido  n_mediciones  max_diferencia_abs  media_diferencia_abs
+      False         33658                 0.0                0.0000
+       True         14473                 0.1                0.0444
+
+==============================================================================================================
+CONSULTA 8.1 | [CREA results.rangos_plausibles] ¿Qué rangos plausibles usaremos y de dónde salen?
+==============================================================================================================
+ measurement_concept_id                       analito unidad  bajo  alto  bajo_alt  alto_alt                                        fuente
+                3038553 Body mass index (BMI) [Ratio]  kg/m2  16.0 100.0       NaN       NaN DQD v1.4.1 (extra: umbral pensado en adultos)
+                3025315                   Body weight     kg   2.0 500.0       NaN       NaN                               DQD v1.4.1 (kg)
+                3027018                    Heart rate   /min  10.0 500.0       0.0     300.0             DQD v1.4.1; alt. MIMIC-IV (0,300)
+                3004249       Systolic blood pressure mm[Hg]  10.0 250.0       0.0     400.0             DQD v1.4.1; alt. MIMIC-IV (0,400)
+
+==============================================================================================================
+CONSULTA 8.2 | ¿Cuántas mediciones (y personas) caen fuera del rango, separando niños y adultos?
+==============================================================================================================
+                      analito grupo_edad  n_mediciones  n_bajo  n_alto  pct_fuera  n_personas_fuera  n_fuera_alt
+Body mass index (BMI) [Ratio]  < 18 años         13016    2925       0      22.47               634            0
+Body mass index (BMI) [Ratio] >= 18 años         54721       0       0       0.00                 0            0
+                  Body weight  < 18 años         18733       0       0       0.00                 0            0
+                  Body weight >= 18 años         57712       0       0       0.00                 0            0
+                   Heart rate  < 18 años         18509       0       0       0.00                 0            0
+                   Heart rate >= 18 años         56385       0       0       0.00                 0            0
+      Systolic blood pressure  < 18 años         18791       0       0       0.00                 0            0
+      Systolic blood pressure >= 18 años         61318       0       0       0.00                 0            0
+
+==============================================================================================================
+CONSULTA 8.3 | ¿Hay valores "centinela" (exactamente repetidos e imposibles, p. ej. 0, 999, 9999, -1)?
+==============================================================================================================
+                      analito  orden  valor  n_repeticiones  pct_del_analito  fuera_de_rango  parece_centinela
+Body mass index (BMI) [Ratio]      1   27.8            2948             4.35           False             False
+Body mass index (BMI) [Ratio]      2   27.7            2799             4.13           False             False
+Body mass index (BMI) [Ratio]      3   27.5            2651             3.91           False             False
+Body mass index (BMI) [Ratio]      4   30.1            2315             3.42           False             False
+Body mass index (BMI) [Ratio]      5   27.9            2260             3.34           False             False
+                  Body weight      1   81.7             458             0.60           False             False
+                  Body weight      2   93.0             450             0.59           False             False
+                  Body weight      3   85.9             443             0.58           False             False
+                  Body weight      4   72.7             379             0.50           False             False
+                  Body weight      5   76.7             363             0.47           False             False
+                   Heart rate      1   98.0            2038             2.72           False             False
+                   Heart rate      2   62.0            1948             2.60           False             False
+                   Heart rate      3   76.0            1946             2.60           False             False
+                   Heart rate      4   82.0            1922             2.57           False             False
+                   Heart rate      5   70.0            1882             2.51           False             False
+      Systolic blood pressure      1  118.0            1966             2.45           False             False
+      Systolic blood pressure      2  116.0            1907             2.38           False             False
+      Systolic blood pressure      3  114.0            1888             2.36           False             False
+      Systolic blood pressure      4  117.0            1876             2.34           False             False
+      Systolic blood pressure      5  119.0            1841             2.30           False             False
+
+==============================================================================================================
+CONSULTA 8.4 | [CREA results.measurement_plausibilidad] Decisión: MARCAR (no borrar ni poner NULL). ¿Cuántas quedan marcadas?
+==============================================================================================================
+                      analito  n_mediciones  n_marcadas_fuera_rango  n_posible_centinela  n_marcadas_adultos
+Body mass index (BMI) [Ratio]         67737                    2925                    0                   0
+                  Body weight         76445                       0                    0                   0
+                   Heart rate         74894                       0                    0                   0
+      Systolic blood pressure         80109                       0                    0                   0
+
+==============================================================================================================
+CONSULTA 9.1 | ¿De qué DOMINIO son los conceptos que acabaron en cada tabla clínica?
+==============================================================================================================
+               tabla dominio_concepto  n_registros  n_personas
+condition_occurrence      Observation       104724        5706
+condition_occurrence        Condition        95284        5620
+condition_occurrence     (concepto 0)         2859        2127
+condition_occurrence      Measurement            1           1
+       drug_exposure             Drug       271654        5577
+         measurement      Measurement      2195630        5706
+
+==============================================================================================================
+CONSULTA 9.2 | ¿Dónde quedaron el PESO, el TABAQUISMO y el "IMC 30+ obesidad" en nuestra base?
+==============================================================================================================
+                                  tabla_actual  concept_id                                       concept_name dominio_concepto  n_registros  n_personas
+                          condition_occurrence     4060985                      Body mass index 30+ - obesity        Condition         2687        2687
+                          condition_occurrence     4256640               Body mass index 40+ - severely obese        Condition           27          27
+condition_occurrence (código fuente 449868002)           0                                No matching concept         Metadata           33          33
+                                   measurement     3025315                                        Body weight      Measurement        76445        5706
+                                   measurement     3038553                      Body mass index (BMI) [Ratio]      Measurement        67737        5575
+                                   measurement    40762638 Body mass index (BMI) [Percentile] Per age and sex      Measurement        14594        1858
+
+==============================================================================================================
+CONSULTA 9.3 | ¿Qué concepto (y dominio) tendría "Tobacco smoking status" (LOINC 72166-2) y sus respuestas?
+==============================================================================================================
+ concept_id           concept_name vocabulary_id concept_code   domain_id standard_concept
+   43054909 Tobacco smoking status         LOINC      72166-2 Observation                S
+    4144272   Never smoked tobacco        SNOMED    266919005 Observation                -
+   42709996   Smokes tobacco daily        SNOMED    449868002 Observation                -
+    4310250              Ex-smoker        SNOMED      8517006 Observation                -
+
+==============================================================================================================
+CONSULTA 9.4 | En el CSV ORIGINAL de Synthea, ¿cuántas respuestas de tabaquismo se perdieron al no tener tabla OBSERVATION?
+==============================================================================================================
+              pregunta                      respuesta  n_registros  n_pacientes_synthea
+Tobacco smoking status Never smoked tobacco (finding)        55473                 4551
+Tobacco smoking status            Ex-smoker (finding)        17198                 1236
+Tobacco smoking status Smokes tobacco daily (finding)          294                  126
+
+==============================================================================================================
+CONSULTA 10.1 | [CREA results.indice_basal] Para cada paciente: fecha índice (1.ª exposición al ingrediente) y la PAS más cercana en ±90 días
+==============================================================================================================
+ n_personas_con_indice
+                   926
+
+==============================================================================================================
+CONSULTA 10.2 | ¿Cuántos pacientes tienen valor basal (±90 y solo previo) y cómo es?
+==============================================================================================================
+ingrediente           analito_basal  n_personas  n_indice_en_periodo  n_con_basal_pm90  pct_con_basal_pm90  n_con_basal_previo  pct_con_basal_previo  mediana_basal_pm90  mediana_dias_a_indice
+ lisinopril Systolic blood pressure         926                  926               340                36.7                 263                  28.4               141.0                    0.0
+
+==============================================================================================================
+CONSULTA 10.3 | ¿Cómo se reparte la distancia (en días) entre la fecha índice y la medición basal elegida?
+==============================================================================================================
+          distancia  n_personas
+       a) -90 a -31          14
+        b) -30 a -1          12
+       c) mismo día         237
+        d) +1 a +30          33
+       e) +31 a +90          44
+z) sin basal en ±90         586
+
+==============================================================================================================
+CONSULTA 11.1 | [CREA results.condition_era] (Extra) ¿Qué eras de condición salen con la ventana de 30 días?
+==============================================================================================================
+ n_eras  n_personas  n_condiciones_origen
+ 184415        5706                200009
+
+==============================================================================================================
+CONSULTA 11.2 | (Extra) ¿Qué condiciones tienen más eras por persona (episodios repetidos)?
+==============================================================================================================
+ condition_concept_id                     condicion  n_eras  n_personas  eras_por_persona
+              4199788         Medication review due   29807        5706              5.22
+              4281516                    Gingivitis   14157        4608              3.07
+              4053118          Full-time employment   12720        4470              2.85
+              4251306                        Stress   13734        4468              3.07
+              4059634          Part-time employment    8669        3659              2.37
+             40481087               Viral sinusitis    5832        3615              1.61
+              4172829        Limited social contact    5385        3042              1.77
+              4309238              Social isolation    5342        3040              1.76
+              4090111              Gingival disease    4412        2706              1.63
+              4060985 Body mass index 30+ - obesity    2687        2687              1.00
+
+Fin. Consultas ejecutadas: 43, con error: 0
