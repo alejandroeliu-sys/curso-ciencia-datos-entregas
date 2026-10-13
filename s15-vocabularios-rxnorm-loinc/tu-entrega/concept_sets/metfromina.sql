@@ -1,0 +1,10 @@
+-- =====================================================
+-- Concept set: Metformina (monoterapia, versión C)
+-- Autor: Alejandro Cedillo
+-- Fecha: 2026-10-13
+-- Vocabularios: RxNorm 20260601, ATC 2026-02-01
+-- Base: OMOP CDM v5.4, datos Synthea (DuckDB)
+-- Definición: productos cuyo único ingrediente es metformina
+--   (RxCUI 6809), excluyendo descendientes de ATC A10BK.
+-- Limitación: RxNorm Extension no está cargado.
+-- =====================================================
