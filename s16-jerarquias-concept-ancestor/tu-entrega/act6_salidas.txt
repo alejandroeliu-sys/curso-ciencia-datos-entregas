@@ -1,0 +1,9 @@
+   person_id  evento      fecha codigo_fuente  source_concept_id      concepto_fuente  concepto_estandar_id    concepto_estandar  ancestro_del_set                 rama  niveles
+0         51    2448 2017-09-20      26929004             378419  Alzheimer's disease                378419  Alzheimer's disease           4182210             Dementia        1
+1         51    2448 2017-09-20      26929004             378419  Alzheimer's disease                378419  Alzheimer's disease            378419  Alzheimer's disease        0
+   person_id  evento      fecha codigo_fuente  source_concept_id      concepto_fuente  concepto_estandar_id    concepto_estandar  ancestro_del_set                 rama  niveles
+0        117    4847 1988-12-08      26929004             378419  Alzheimer's disease                378419  Alzheimer's disease            378419  Alzheimer's disease        0
+1        117    4847 1988-12-08      26929004             378419  Alzheimer's disease                378419  Alzheimer's disease           4182210             Dementia        1
+   person_id  evento      fecha codigo_fuente  source_concept_id      concepto_fuente  concepto_estandar_id    concepto_estandar  ancestro_del_set                 rama  niveles
+0        371   14883 2023-05-01      26929004             378419  Alzheimer's disease                378419  Alzheimer's disease           4182210             Dementia        1
+1        371   14883 2023-05-01      26929004             378419  Alzheimer's disease                378419  Alzheimer's disease            378419  Alzheimer's disease        0
