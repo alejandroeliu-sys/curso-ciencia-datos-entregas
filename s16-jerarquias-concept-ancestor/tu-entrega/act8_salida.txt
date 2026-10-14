@@ -1,0 +1,199 @@
+V1 IN subconsulta: resultado=147 tiempos_ms=[6.1, 4.5, 4.3] mediana=4.5 ms
+V2 tabla + JOIN: resultado=147 tiempos_ms=[2.3, 2.0, 2.2] mediana=2.2 ms
+
+===== PLAN V1 =====
+┌─────────────────────────────────────┐
+│┌───────────────────────────────────┐│
+││    Query Profiling Information    ││
+│└───────────────────────────────────┘│
+└─────────────────────────────────────┘
+EXPLAIN ANALYZE  SELECT count(DISTINCT person_id) FROM condition_occurrence WHERE condition_concept_id IN (     SELECT descendant_concept_id FROM concept_ancestor WHERE ancestor_concept_id = 4182210) 
+┌────────────────────────────────────────────────┐
+│┌──────────────────────────────────────────────┐│
+││              Total Time: 0.0053s             ││
+│└──────────────────────────────────────────────┘│
+└────────────────────────────────────────────────┘
+┌───────────────────────────┐
+│           QUERY           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│      EXPLAIN_ANALYZE      │
+│    ────────────────────   │
+│                           │
+│           0 rows          │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│    UNGROUPED_AGGREGATE    │
+│    ────────────────────   │
+│        Aggregates:        │
+│     count(DISTINCT #0)    │
+│                           │
+│                           │
+│                           │
+│           1 row           │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         PROJECTION        │
+│    ────────────────────   │
+│         person_id         │
+│                           │
+│                           │
+│                           │
+│          147 rows         │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         HASH_JOIN         │
+│    ────────────────────   │
+│      Join Type: SEMI      │
+│                           │
+│        Conditions:        │
+│ condition_concept_id = #0 ├──────────────┐
+│                           │              │
+│                           │              │
+│                           │              │
+│          147 rows         │              │
+│           0.00s           │              │
+└─────────────┬─────────────┘              │
+┌─────────────┴─────────────┐┌─────────────┴─────────────┐
+│         TABLE_SCAN        ││           FILTER          │
+│    ────────────────────   ││    ────────────────────   │
+│           Table:          ││ (descendant_concept_id <= │
+│         omop.main         ││          45770830)        │
+│   .condition_occurrence   ││                           │
+│                           ││                           │
+│   Type: Sequential Scan   ││                           │
+│                           ││                           │
+│        Projections:       ││           0.00s           │
+│    condition_concept_id   ││                           │
+│         person_id         ││                           │
+│                           ││                           │
+│          Filters:         ││                           │
+│ condition_concept_id>=262 ││                           │
+│                           ││                           │
+│      Dynamic Filters:     ││                           │
+│         optional:         ││                           │
+│    condition_concept_id>  ││                           │
+│   =374326 AND optional:   ││                           │
+│    condition_concept_id<  ││                           │
+│  =45765480 AND optional:  ││                           │
+│   condition_concept_id IN ││                           │
+│           BF(#0)          ││                           │
+│                           ││                           │
+│                           ││                           │
+│                           ││                           │
+│          163 rows         ││          215 rows         │
+│           0.00s           ││          (0.00s)          │
+└───────────────────────────┘└─────────────┬─────────────┘
+                             ┌─────────────┴─────────────┐
+                             │         TABLE_SCAN        │
+                             │    ────────────────────   │
+                             │           Table:          │
+                             │ omop.main.concept_ancestor│
+                             │                           │
+                             │   Type: Sequential Scan   │
+                             │                           │
+                             │        Projections:       │
+                             │   descendant_concept_id   │
+                             │                           │
+                             │          Filters:         │
+                             │ancestor_concept_id=4182210│
+                             │                           │
+                             │                           │
+                             │                           │
+                             │          216 rows         │
+                             │           0.03s           │
+                             └───────────────────────────┘
+
+
+===== PLAN V2 =====
+┌─────────────────────────────────────┐
+│┌───────────────────────────────────┐│
+││    Query Profiling Information    ││
+│└───────────────────────────────────┘│
+└─────────────────────────────────────┘
+EXPLAIN ANALYZE  SELECT count(DISTINCT co.person_id) FROM condition_occurrence co JOIN cs_demencia cs ON cs.concept_id = co.condition_concept_id 
+┌────────────────────────────────────────────────┐
+│┌──────────────────────────────────────────────┐│
+││              Total Time: 0.0030s             ││
+│└──────────────────────────────────────────────┘│
+└────────────────────────────────────────────────┘
+┌───────────────────────────┐
+│           QUERY           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│      EXPLAIN_ANALYZE      │
+│    ────────────────────   │
+│                           │
+│           0 rows          │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│    UNGROUPED_AGGREGATE    │
+│    ────────────────────   │
+│        Aggregates:        │
+│     count(DISTINCT #0)    │
+│                           │
+│                           │
+│                           │
+│           1 row           │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         PROJECTION        │
+│    ────────────────────   │
+│         person_id         │
+│                           │
+│                           │
+│                           │
+│          147 rows         │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         HASH_JOIN         │
+│    ────────────────────   │
+│      Join Type: INNER     │
+│                           │
+│        Conditions:        │
+│   condition_concept_id =  │
+│         concept_id        ├──────────────┐
+│                           │              │
+│                           │              │
+│                           │              │
+│          147 rows         │              │
+│           0.00s           │              │
+└─────────────┬─────────────┘              │
+┌─────────────┴─────────────┐┌─────────────┴─────────────┐
+│         TABLE_SCAN        ││         TABLE_SCAN        │
+│    ────────────────────   ││    ────────────────────   │
+│           Table:          ││           Table:          │
+│         omop.main         ││  "temp".main.cs_demencia  │
+│   .condition_occurrence   ││                           │
+│                           ││      Type: Index Scan     │
+│   Type: Sequential Scan   ││                           │
+│                           ││        Projections:       │
+│        Projections:       ││         concept_id        │
+│    condition_concept_id   ││                           │
+│         person_id         ││          Filters:         │
+│                           ││    concept_id<=45770830   │
+│          Filters:         ││                           │
+│   condition_concept_id>   ││                           │
+│          =374326          ││                           │
+│                           ││                           │
+│      Dynamic Filters:     ││           0.00s           │
+│         optional:         ││                           │
+│    condition_concept_id>  ││                           │
+│   =374326 AND optional:   ││                           │
+│    condition_concept_id<  ││                           │
+│  =45765480 AND optional:  ││                           │
+│   condition_concept_id IN ││                           │
+│       BF(concept_id)      ││                           │
+│                           ││                           │
+│                           ││                           │
+│                           ││                           │
+│          163 rows         ││          215 rows         │
+│           0.00s           ││          (0.00s)          │
+└───────────────────────────┘└───────────────────────────┘
+
