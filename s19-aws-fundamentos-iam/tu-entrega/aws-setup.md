@@ -67,7 +67,7 @@ Nota: listar buckets funciona por el `AdministratorAccess`. Con la política mí
 Comprobante: `capturas/08_notebook.png`.
 
 ## 9. Revisión de secretos
-`gitleaks git . -v` sobre todo el historial: 8 commits revisados, sin fugas. Salida en `gitleaks_salida.txt`.
+`gitleaks git . -v` sobre todo el historial: 9 commits revisados, sin fugas. Salida en `gitleaks_salida.txt`.
 
 ## 10. Limpieza
 - Borrar el bucket al terminar (primero vaciarlo).
