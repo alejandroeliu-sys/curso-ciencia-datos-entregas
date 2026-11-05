@@ -1,0 +1,9 @@
+venv/
+parquet_local/
+__pycache__/
+.ipynb_checkpoints/
+*.csv
+*.parquet
+.aws/
+.env
+.pytest_cache/
