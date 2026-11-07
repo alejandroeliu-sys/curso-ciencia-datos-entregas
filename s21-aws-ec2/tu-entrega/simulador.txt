@@ -1,0 +1,4 @@
+s3:GetObject	arn:aws:s3:::fragilidad-datalake-ace-2026/staging/synthea/x.parquet	allowed
+s3:PutObject	arn:aws:s3:::fragilidad-datalake-ace-2026/results/x.csv	allowed
+s3:PutObject	arn:aws:s3:::fragilidad-datalake-ace-2026/staging/x.parquet	implicitDeny
+s3:GetObject	arn:aws:s3:::fragilidad-datalake-ace-2026/raw/prueba.txt	implicitDeny
