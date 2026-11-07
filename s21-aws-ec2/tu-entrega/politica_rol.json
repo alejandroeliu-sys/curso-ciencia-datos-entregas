@@ -1,0 +1,15 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {"Sid": "ListarSoloPrefijos", "Effect": "Allow", "Action": "s3:ListBucket",
+     "Resource": "arn:aws:s3:::fragilidad-datalake-ace-2026",
+     "Condition": {"StringLike": {"s3:prefix": ["staging/*", "results/*"]}}},
+    {"Sid": "LeerDatos", "Effect": "Allow", "Action": "s3:GetObject",
+     "Resource": "arn:aws:s3:::fragilidad-datalake-ace-2026/staging/*"},
+    {"Sid": "EscribirResultados", "Effect": "Allow", "Action": ["s3:PutObject", "s3:GetObject"],
+     "Resource": "arn:aws:s3:::fragilidad-datalake-ace-2026/results/*"},
+    {"Sid": "BajarImagenECR", "Effect": "Allow",
+     "Action": ["ecr:GetAuthorizationToken", "ecr:BatchGetImage", "ecr:GetDownloadUrlForLayer"],
+     "Resource": "*"}
+  ]
+}
