@@ -1,0 +1,10 @@
+artifact_location: file:///home/alecedillo/curso-ciencia-datos-entregas/s24-xgboost-lightgbm-hpo/tu-entrega/mlruns/271410398367427230/models/m-960e45d44b0e4b3694af278dd5f952a2/artifacts
+creation_timestamp: 1795005457275
+experiment_id: '271410398367427230'
+last_updated_timestamp: 1795005459807
+model_id: m-960e45d44b0e4b3694af278dd5f952a2
+model_type: null
+name: modelo
+source_run_id: 2821206f29864954a7e292c364d33532
+status: 2
+status_message: null

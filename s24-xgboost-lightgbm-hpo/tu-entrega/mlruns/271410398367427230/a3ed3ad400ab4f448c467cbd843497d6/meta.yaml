@@ -1,0 +1,14 @@
+artifact_uri: file:///home/alecedillo/curso-ciencia-datos-entregas/s24-xgboost-lightgbm-hpo/tu-entrega/mlruns/271410398367427230/a3ed3ad400ab4f448c467cbd843497d6/artifacts
+end_time: 1795005457160
+entry_point_name: ''
+experiment_id: '271410398367427230'
+lifecycle_stage: active
+run_id: a3ed3ad400ab4f448c467cbd843497d6
+run_name: LightGBM (ajustado)
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1795005457144
+status: 3
+tags: []
+user_id: alecedillo

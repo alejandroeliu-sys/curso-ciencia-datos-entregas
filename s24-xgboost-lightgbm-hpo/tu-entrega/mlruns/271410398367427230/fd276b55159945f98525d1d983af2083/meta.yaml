@@ -1,0 +1,14 @@
+artifact_uri: file:///home/alecedillo/curso-ciencia-datos-entregas/s24-xgboost-lightgbm-hpo/tu-entrega/mlruns/271410398367427230/fd276b55159945f98525d1d983af2083/artifacts
+end_time: 1795005457206
+entry_point_name: ''
+experiment_id: '271410398367427230'
+lifecycle_stage: active
+run_id: fd276b55159945f98525d1d983af2083
+run_name: Regresión logística
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1795005457198
+status: 3
+tags: []
+user_id: alecedillo

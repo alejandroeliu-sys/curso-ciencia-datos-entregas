@@ -1,0 +1,9 @@
+artifact_location: file:///home/alecedillo/curso-ciencia-datos-entregas/s24-xgboost-lightgbm-hpo/tu-entrega/mlruns/271410398367427230
+creation_time: 1795005457088
+effective_trace_archival_retention: null
+experiment_id: '271410398367427230'
+last_update_time: 1795005457088
+lifecycle_stage: active
+name: lab24_muerte_90d
+trace_location: null
+workspace: default
