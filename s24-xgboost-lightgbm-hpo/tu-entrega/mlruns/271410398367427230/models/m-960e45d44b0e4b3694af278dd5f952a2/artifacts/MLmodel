@@ -1,0 +1,58 @@
+artifact_path: file:///home/alecedillo/curso-ciencia-datos-entregas/s24-xgboost-lightgbm-hpo/tu-entrega/mlruns/271410398367427230/models/m-960e45d44b0e4b3694af278dd5f952a2/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.skops
+    predict_fn: predict
+    python_version: 3.14.3
+  sklearn:
+    code: null
+    pickled_model: model.skops
+    serialization_format: skops
+    sklearn_version: 1.9.1
+    skops_trusted_types:
+    - collections.OrderedDict
+    - lightgbm.basic.Booster
+    - lightgbm.sklearn.LGBMClassifier
+    - numpy.dtype
+is_signature_from_type_hint: false
+mlflow_version: 3.18.0
+model_id: m-960e45d44b0e4b3694af278dd5f952a2
+model_size_bytes: 356689
+model_uuid: m-960e45d44b0e4b3694af278dd5f952a2
+prompts: null
+run_id: 2821206f29864954a7e292c364d33532
+signature:
+  inputs: '[{"type": "double", "name": "edad", "required": true}, {"type": "long",
+    "name": "sexo_masc", "required": true}, {"type": "long", "name": "obs_previa_dias",
+    "required": true}, {"type": "long", "name": "dm2_dx", "required": true}, {"type":
+    "long", "name": "ic_dx", "required": true}, {"type": "long", "name": "erc_dx",
+    "required": true}, {"type": "long", "name": "demencia_dx", "required": true},
+    {"type": "long", "name": "cardiop_isq_dx", "required": true}, {"type": "long",
+    "name": "hta_dx", "required": true}, {"type": "long", "name": "anemia_dx", "required":
+    true}, {"type": "long", "name": "dislipidemia_dx", "required": true}, {"type":
+    "long", "name": "n_ingredientes_365", "required": true}, {"type": "long", "name":
+    "n_ingredientes_30", "required": true}, {"type": "long", "name": "dm_inferida",
+    "required": true}, {"type": "long", "name": "hta_inferida", "required": true},
+    {"type": "long", "name": "ic_inferida", "required": true}, {"type": "long", "name":
+    "dislipidemia_inferida", "required": true}, {"type": "double", "name": "albumina_ultima",
+    "required": false}, {"type": "long", "name": "albumina_n", "required": true},
+    {"type": "double", "name": "albumina_pendiente", "required": false}, {"type":
+    "double", "name": "albumina_de", "required": false}, {"type": "double", "name":
+    "creatinina_ultima", "required": false}, {"type": "long", "name": "creatinina_n",
+    "required": true}, {"type": "double", "name": "creatinina_pendiente", "required":
+    false}, {"type": "double", "name": "egfr_ckdepi2021", "required": false}, {"type":
+    "double", "name": "urea_ultima", "required": false}, {"type": "long", "name":
+    "urea_n", "required": true}, {"type": "double", "name": "urea_pendiente", "required":
+    false}, {"type": "double", "name": "pas_ultima", "required": false}, {"type":
+    "double", "name": "imc_ultimo", "required": false}, {"type": "long", "name": "n_ambulatorias_365",
+    "required": true}, {"type": "long", "name": "n_hosp_365", "required": true}, {"type":
+    "long", "name": "n_urgencias_365", "required": true}, {"type": "long", "name":
+    "estancia_indice_dias", "required": true}]'
+  outputs: '[{"type": "tensor", "tensor-spec": {"dtype": "float64", "shape": [-1]}}]'
+  params: null
+type_hint_from_example: false
+utc_time_created: '2026-11-18 12:37:37.281266'

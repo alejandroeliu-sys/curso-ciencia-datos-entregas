@@ -1,0 +1,14 @@
+artifact_uri: file:///home/alecedillo/curso-ciencia-datos-entregas/s24-xgboost-lightgbm-hpo/tu-entrega/mlruns/271410398367427230/7d92848c8595420482a4503312ac0755/artifacts
+end_time: 1795005457224
+entry_point_name: ''
+experiment_id: '271410398367427230'
+lifecycle_stage: active
+run_id: 7d92848c8595420482a4503312ac0755
+run_name: SVM (RBF)
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1795005457216
+status: 3
+tags: []
+user_id: alecedillo

@@ -1,0 +1,14 @@
+artifact_uri: file:///home/alecedillo/curso-ciencia-datos-entregas/s24-xgboost-lightgbm-hpo/tu-entrega/mlruns/271410398367427230/f97c42280bfe4baf8f8fc64589cb5766/artifacts
+end_time: 1795005457215
+entry_point_name: ''
+experiment_id: '271410398367427230'
+lifecycle_stage: active
+run_id: f97c42280bfe4baf8f8fc64589cb5766
+run_name: k-NN
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1795005457208
+status: 3
+tags: []
+user_id: alecedillo
